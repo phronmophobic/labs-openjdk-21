@@ -38,8 +38,8 @@
 #include <sys/param.h>
 #include <sys/mount.h>
 #include <mach/mach.h>
-#include <sys/proc_info.h>
-#include <libproc.h>
+//#include <sys/proc_info.h>
+//#include <libproc.h>
 #endif
 #elif !defined(_AIX)
 #include <sys/swap.h>
@@ -273,49 +273,51 @@ Java_com_sun_management_internal_OperatingSystemImpl_getOpenFileDescriptorCount0
   (JNIEnv *env, jobject mbean)
 {
 #ifdef __APPLE__
-    // This code is influenced by the darwin lsof source
-    pid_t my_pid;
-    struct proc_bsdinfo bsdinfo;
-    struct proc_fdinfo *fds;
-    int nfiles;
-    kern_return_t kres;
-    int res;
-    size_t fds_size;
-
-    kres = pid_for_task(mach_task_self(), &my_pid);
-    if (kres != KERN_SUCCESS) {
-        throw_internal_error(env, "pid_for_task failed");
-        return -1;
-    }
-
-    // get the maximum number of file descriptors
-    res = proc_pidinfo(my_pid, PROC_PIDTBSDINFO, 0, &bsdinfo, PROC_PIDTBSDINFO_SIZE);
-    if (res <= 0) {
-        throw_internal_error(env, "proc_pidinfo with PROC_PIDTBSDINFO failed");
-        return -1;
-    }
-
-    // allocate memory to hold the fd information (we don't actually use this information
-    // but need it to get the number of open files)
-    fds_size = bsdinfo.pbi_nfiles * sizeof(struct proc_fdinfo);
-    fds = malloc(fds_size);
-    if (fds == NULL) {
-        JNU_ThrowOutOfMemoryError(env, "could not allocate space for file descriptors");
-        return -1;
-    }
-
-    // get the list of open files - the return value is the number of bytes
-    // proc_pidinfo filled in
-    res = proc_pidinfo(my_pid, PROC_PIDLISTFDS, 0, fds, fds_size);
-    if (res <= 0) {
-        free(fds);
-        throw_internal_error(env, "proc_pidinfo failed for PROC_PIDLISTFDS");
-        return -1;
-    }
-    nfiles = res / sizeof(struct proc_fdinfo);
-    free(fds);
-
-    return nfiles;
+    (*env)->FatalError(env, "Java_com_sun_management_internal_OperatingSystemImpl_getOpenFileDescriptorCount0 called:  Unimplemented");
+//    // This code is influenced by the darwin lsof source
+//    pid_t my_pid;
+//    struct proc_bsdinfo bsdinfo;
+//    struct proc_fdinfo *fds;
+//    int nfiles;
+//    kern_return_t kres;
+//    int res;
+//    size_t fds_size;
+//
+//    kres = pid_for_task(mach_task_self(), &my_pid);
+//    if (kres != KERN_SUCCESS) {
+//        throw_internal_error(env, "pid_for_task failed");
+//        return -1;
+//    }
+//
+//    // get the maximum number of file descriptors
+//    res = proc_pidinfo(my_pid, PROC_PIDTBSDINFO, 0, &bsdinfo, PROC_PIDTBSDINFO_SIZE);
+//    if (res <= 0) {
+//        throw_internal_error(env, "proc_pidinfo with PROC_PIDTBSDINFO failed");
+//        return -1;
+//    }
+//
+//    // allocate memory to hold the fd information (we don't actually use this information
+//    // but need it to get the number of open files)
+//    fds_size = bsdinfo.pbi_nfiles * sizeof(struct proc_fdinfo);
+//    fds = malloc(fds_size);
+//    if (fds == NULL) {
+//        JNU_ThrowOutOfMemoryError(env, "could not allocate space for file descriptors");
+//        return -1;
+//    }
+//
+//    // get the list of open files - the return value is the number of bytes
+//    // proc_pidinfo filled in
+//    res = proc_pidinfo(my_pid, PROC_PIDLISTFDS, 0, fds, fds_size);
+//    if (res <= 0) {
+//        free(fds);
+//        throw_internal_error(env, "proc_pidinfo failed for PROC_PIDLISTFDS");
+//        return -1;
+//    }
+//    nfiles = res / sizeof(struct proc_fdinfo);
+//    free(fds);
+//
+//    return nfiles;
+    return 0;
 #elif defined(_ALLBSD_SOURCE)
     /*
      * XXXBSD: there's no way available to do it in FreeBSD, AFAIK.
