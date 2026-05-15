@@ -481,7 +481,7 @@ else
    # maybe-uninitialized required for GCC 8 builds. Not required for GCC 9+.
    HARFBUZZ_DISABLED_WARNINGS_CXX_gcc := class-memaccess noexcept-type \
        expansion-to-defined dangling-reference maybe-uninitialized
-   HARFBUZZ_DISABLED_WARNINGS_clang := missing-field-initializers range-loop-analysis
+   HARFBUZZ_DISABLED_WARNINGS_clang := missing-field-initializers range-loop-analysis nontrivial-memcall
    HARFBUZZ_DISABLED_WARNINGS_microsoft := 4267 4244
 
    LIBFONTMANAGER_CFLAGS += $(HARFBUZZ_CFLAGS)
@@ -787,7 +787,7 @@ ifeq ($(ENABLE_HEADLESS_ONLY), false)
       DISABLED_WARNINGS_gcc_splashscreen_gfx_impl.c := implicit-fallthrough maybe-uninitialized, \
       DISABLED_WARNINGS_gcc_splashscreen_impl.c := implicit-fallthrough sign-compare unused-function, \
       DISABLED_WARNINGS_gcc_splashscreen_sys.c := type-limits unused-result, \
-      DISABLED_WARNINGS_clang := deprecated-non-prototype, \
+      DISABLED_WARNINGS_clang := deprecated-non-prototype unterminated-string-initialization, \
       DISABLED_WARNINGS_clang_dgif_lib.c := sign-compare, \
       DISABLED_WARNINGS_clang_gzwrite.c := format-nonliteral, \
       DISABLED_WARNINGS_clang_splashscreen_impl.c := sign-compare, \
